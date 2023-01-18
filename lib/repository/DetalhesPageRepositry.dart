@@ -1,74 +1,53 @@
-import '../Api/DioApi.dart';
+
+
 import '../model/Genre.dart';
 import '../model/ItemMovieTrailler.dart';
+import '../model/Movie.dart';
 import '../model/ReviewItem.dart';
+import '../service/ApiTheMovieService.dart';
 
-class DetalhesPageRepository{
-  var genreList = <Genre>[];
+class DetalhesPageRepository {
+  final serviceMovie = ApiTheMovieService();
 
-  Future<ItemMovieTrailler>? getVideoApi(String uriFilme) async {
-    var result = DioApi.getApi(uriFilme);
-    var dados;
-    late ItemMovieTrailler  item ;
-    await result.then((value)  {
-      if (value.statusCode == 200) {
-        dados = value.data["results"][0];
-        item =ItemMovieTrailler.fromJson(dados);
-        return item;
-      } else {
-        print("erro ao carregar video api");
-      }
-    }).catchError((erro){
-      return erro;
-    });
-    return item;
-  }
   recuperarTrailerFilme(int? idMovie) async {
-    String uriVideo = "movie/$idMovie/videos";
-    return  await getVideoApi(uriVideo);
+
+    ItemMovieTrailler? itemMovieTrailler = await serviceMovie.getThrillerApi(idMovie);
+    if (itemMovieTrailler != null) {
+       return itemMovieTrailler;
+    } else {
+       return null;
+    }
   }
 
-
-  Future<List<Genre>> getGenre(String uriGenre) async {
-    var dados;
-    List<Genre> generos = [];
-    var result = DioApi.getApi(uriGenre);
-    await result.then((value) {
-      dados = value.data['genres'];
-
-      dados.forEach((element) {
-        generos.add(Genre.fromJson(element));
-      });
-    });
-    return generos;
-  }
   Future<List<Genre>> recuperarGeneros(List<dynamic>? listGenre) async {
-    String uriGend = "genre/movie/list";
-    List<Genre> gen = await getGenre(uriGend);
+    List<Genre> genre = await serviceMovie.getGenre();
+    var genreList = <Genre>[];
+
     if (listGenre != null) {
-      gen.forEach((element) {
+      genre.forEach((element) {
         if (listGenre.contains(element.id)) {
           genreList.add(element);
         }
       });
       return genreList;
-    }else{
-      return genreList;
     }
+    return [];
   }
 
-  Future<List<Results>> getReviews(int? movieId,[int pag = 1]) async{
-    List<Results> resultsList =[];
-    var result = await DioApi.getApi("movie/${movieId}/reviews",pag);
-    if(result.statusCode ==200){
-      var  jsons = result.data["results"];
-      jsons.forEach((element){
-        Results result = Results.fromJson(element);
-        resultsList.add(result);
-      });
-    }else{
-      print("erro ${result.statusCode}");
+  Future<List<Movie>> recuperarMoviesSimilar(int? idMovie) async {
+    String path = "/movie/$idMovie/similar";
+    var lista = serviceMovie.getListMovieApi(path);
+    if (lista != null) {
+      return lista;
     }
-    return resultsList;
+    return [];
+  }
+
+  Future<List<Results>> recuperarReviews(int? movieId) async {
+    List<Results> resultsList = await serviceMovie.getReviews(movieId);
+    if (resultsList != null) {
+      return resultsList;
+    }
+    return [];
   }
 }

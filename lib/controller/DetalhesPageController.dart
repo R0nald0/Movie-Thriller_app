@@ -11,7 +11,6 @@ class DetalhesPageController extends GetxController {
   var itemMovieTrailler = ItemMovieTrailler().obs;
   var key ="".obs;
   final _detalhePageRpository = DetalhesPageRepository();
-  final _movieRpository = MovieRpository();
   final _listGenders = <Genre>[].obs;
    var _movieSimilar =  <Movie>[].obs;
    final _listReview = <Results>[].obs;
@@ -36,19 +35,15 @@ class DetalhesPageController extends GetxController {
 
   getMoviesSimilar(int? idMovie) async {
     try {
-         _movieSimilar.addAll(await _movieRpository.getMoviesSimilar(idMovie));
+         _movieSimilar.addAll(await _detalhePageRpository.recuperarMoviesSimilar(idMovie));
       } catch (e, s) {
          print("erro ${e} -- ${s}");
       }
   }
 
   getMoviesReview(int? movieId) async{
-    print("Reviews ${movieId}");
          try{
-           _listReview.addAll(await _detalhePageRpository.getReviews(movieId));
-           _listReview.forEach((element) {
-              print("Reviews ${element.author} :COmentario ${element.content}");
-           });
+           _listReview.addAll(await _detalhePageRpository.recuperarReviews(movieId));
          }catch(e,s){
              s.printError;
              e.printError;
@@ -62,7 +57,6 @@ class DetalhesPageController extends GetxController {
   }
   @override
   void onClose() {
-
     super.onClose();
   }
 }
