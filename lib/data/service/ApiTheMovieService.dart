@@ -1,24 +1,26 @@
 import '../Api/DioApi.dart';
-import '../model/Genre.dart';
-import '../model/ItemMovieTrailler.dart';
-import '../model/Movie.dart';
-import '../model/MovieLatesy.dart';
-import '../model/ReviewItem.dart';
+import '../../model/Genre.dart';
+import '../../model/ItemMovieTrailler.dart';
+import '../../model/Movie.dart';
+import '../../model/MovieLatesy.dart';
+import '../../model/ReviewItem.dart';
 
 class ApiTheMovieService {
-
   var _moviesLatests = MovieLatesy();
   var genreList = <Genre>[];
+
+  final DioApi dioApi;
+  ApiTheMovieService(this.dioApi);
 
   Future<List<Movie>> getListMovieApi(String uriFilmes, [var pag = 1]) async {
     var data;
 
-    var result = DioApi.getApi(uriFilmes, pag);
+    var result = dioApi.getApi(uriFilmes, pag);
     List<Movie> list = [];
 
     await result.then((value) {
       if (value.statusCode == 200) {
-        data =value.data["results"];
+        data = value.data["results"];
         data.forEach((element) {
           Movie movie = Movie(
               adult: element['adult'],
@@ -46,7 +48,7 @@ class ApiTheMovieService {
     String uriGenre = "genre/movie/list";
 
     List<Genre> generos = [];
-    var result = DioApi.getApi(uriGenre);
+    var result = dioApi.getApi(uriGenre);
     await result.then((value) {
       dados = value.data['genres'];
 
@@ -57,11 +59,11 @@ class ApiTheMovieService {
     return generos;
   }
 
-  Future getMovieLatestFromApi( [int pag = 1]) async {
+  Future getMovieLatestFromApi([int pag = 1]) async {
     String uriTopRated = "movie/latest";
-    var result = DioApi.getApi(uriTopRated, pag);
+    var result = dioApi.getApi(uriTopRated, pag);
 
-     result.then((value) {
+    result.then((value) {
       if (value.statusCode == 200) {
         var jsonn = value.data;
         _moviesLatests = MovieLatesy.fromJson(jsonn);
@@ -72,37 +74,35 @@ class ApiTheMovieService {
 
   Future<ItemMovieTrailler>? getThrillerApi(int? idMovie) async {
     String uriVideo = "movie/$idMovie/videos";
-    var result = DioApi.getApi(uriVideo);
+    var result = dioApi.getApi(uriVideo);
     var dados;
-    late ItemMovieTrailler  item ;
-    await result.then((value)  {
+    late ItemMovieTrailler item;
+    await result.then((value) {
       if (value.statusCode == 200) {
         dados = value.data["results"][0];
-        item =ItemMovieTrailler.fromJson(dados);
+        item = ItemMovieTrailler.fromJson(dados);
         return item;
       } else {
         print("erro ao carregar video api");
       }
-    }).catchError((erro){
+    }).catchError((erro) {
       return erro;
     });
     return item;
   }
 
-  Future<List<Results>> getReviews(int? movieId,[int pag = 1]) async{
-    List<Results> resultsList =[];
-    var result = await DioApi.getApi("movie/$movieId/reviews",pag);
-    if(result.statusCode ==200){
-      var  jsons = result.data["results"];
-      jsons.forEach((element){
+  Future<List<Results>> getReviews(int? movieId, [int pag = 1]) async {
+    List<Results> resultsList = [];
+    var result = await dioApi.getApi("movie/$movieId/reviews", pag);
+    if (result.statusCode == 200) {
+      var jsons = result.data["results"];
+      jsons.forEach((element) {
         Results result = Results.fromJson(element);
         resultsList.add(result);
       });
-    }else{
+    } else {
       print("erro ${result.statusCode}");
     }
     return resultsList;
   }
-
-
 }

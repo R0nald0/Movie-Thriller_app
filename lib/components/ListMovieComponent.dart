@@ -30,10 +30,10 @@ class ListMovieComponent extends StatelessWidget {
                 onTap: (){
                   Get.to(()=>MovieDetalhesPage(movie: movie,));
                 },
-                child:  CardComponent(
-                  urlImg: "${Config.BASE_URLIMG}${Config.BASE_URLIMG_SIZE}${movie.posterPath}",
-                  titulo: movie.title!,
-                ),
+                  child: CardComponent(
+                    urlImg: "${Config.BASE_URLIMG}${Config.BASE_URLIMG_SIZE}${movie.posterPath}",
+                    titulo: movie.title!,
+                  ),
               );
             }),
     );

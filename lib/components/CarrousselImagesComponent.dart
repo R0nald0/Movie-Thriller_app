@@ -13,7 +13,7 @@ class CarrousselImagesComponent extends StatelessWidget {
       "https://files.tecnoblog.net/wp-content/uploads/2022/04/batman.jpg"
     ];
 
-    CarouselController carouselController =CarouselController();
+   CarouselController();
     return CarouselSlider.builder(
       itemCount: imagens.length,
       itemBuilder: (context,int index, int pageIndex){
@@ -27,16 +27,15 @@ class CarrousselImagesComponent extends StatelessWidget {
 
  Widget sliderImage(String url , int index){
    return Container(
-      color: Colors.amber,
-     child: Image.network(url,fit: BoxFit.contain,),
+     child: Image.network(url,fit: BoxFit.contain)
    );
   }
 
   CarouselOptions options(){
      return CarouselOptions(
-       height: 400,
+       height:400,
        aspectRatio: 16/9,
-       viewportFraction: 0.8,
+       viewportFraction: 1.0,
        initialPage: 0,
        enableInfiniteScroll: true,
        autoPlay: true,

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -9,49 +8,48 @@ import '../config/Config.dart';
 import '../controller/ListMoviePageController.dart';
 import '../model/ListsModel.dart';
 import '../model/Movie.dart';
+import '../data/repository/MovieRepository.dart';
+import '../data/service/ApiTheMovieService.dart';
 
 class ListMoviePage extends StatelessWidget {
-    ListModel modelList;
-   ListMoviePage({Key? key ,required this.modelList}) : super(key: key);
+  ListModel modelList;
+  ListMoviePage({Key? key, required this.modelList}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var controllerList = Get.put(ListMoviePageController(modelList ));
-
+    final movieRepositorie = Get.find<MovieRpository>();
+    var controllerList =
+        Get.put(ListMoviePageController(modelList, movieRepositorie));
 
     return Scaffold(
-      appBar:AppBar(
-          title:Text("${modelList.titleList}")
-      ),
-      body:Container(
+      appBar: AppBar(title: Text("${modelList.titleList}")),
+      body: Container(
         color: Colors.black45,
         padding: EdgeInsets.all(8),
+        child: Obx(() => GridView.builder(
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 220,
+                mainAxisExtent: 300,
+                mainAxisSpacing: 20,
+              ),
+              itemCount: controllerList.listMovie.length,
+              itemBuilder: (_, index) {
+                Movie item = controllerList.listMovie.elementAt(index);
+                controllerList.pagination(
+                    index, controllerList.listMovie.length);
 
-          child: Obx(()=>
-              GridView.builder(
-                gridDelegate:const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 220,
-                  mainAxisExtent: 300,
-                  mainAxisSpacing: 20,
-                ),
-                itemCount: controllerList.listMovie.length,
-                itemBuilder: ( _, index) {
-                  Movie item =  controllerList.listMovie.elementAt(index);
-                  controllerList.pagination(index, controllerList.listMovie.length);
-
-                  return GestureDetector(
-                      onTap: (){Get.to(()=>MovieDetalhesPage(movie: item));},
-                      child: CardComponent(
-                        urlImg: "${Config.BASE_URLIMG}${Config.BASE_URLIMG_SIZE}${item.posterPath}",
-                        titulo:"${item.title}",
-                      )
-                  );
-                },
-
-              )
-          ),
-
-      ) ,
+                return GestureDetector(
+                    onTap: () {
+                      Get.to(() => MovieDetalhesPage(movie: item));
+                    },
+                    child: CardComponent(
+                      urlImg:
+                          "${Config.BASE_URLIMG}${Config.BASE_URLIMG_SIZE}${item.posterPath}",
+                      titulo: "${item.title}",
+                    ));
+              },
+            )),
+      ),
     );
   }
 }

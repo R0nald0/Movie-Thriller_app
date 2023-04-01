@@ -1,21 +1,24 @@
+import 'package:dio/dio.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/get_core.dart';
+import 'package:the_movie/data/Api/DioApi.dart';
 
-
-import '../model/Genre.dart';
-import '../model/ItemMovieTrailler.dart';
-import '../model/Movie.dart';
-import '../model/ReviewItem.dart';
+import '../../model/Genre.dart';
+import '../../model/ItemMovieTrailler.dart';
+import '../../model/Movie.dart';
+import '../../model/ReviewItem.dart';
 import '../service/ApiTheMovieService.dart';
 
 class DetalhesPageRepository {
-  final serviceMovie = ApiTheMovieService();
+  final serviceMovie = Get.find<ApiTheMovieService>();
 
   recuperarTrailerFilme(int? idMovie) async {
-
-    ItemMovieTrailler? itemMovieTrailler = await serviceMovie.getThrillerApi(idMovie);
+    ItemMovieTrailler? itemMovieTrailler =
+        await serviceMovie.getThrillerApi(idMovie);
     if (itemMovieTrailler != null) {
-       return itemMovieTrailler;
+      return itemMovieTrailler;
     } else {
-       return null;
+      return null;
     }
   }
 

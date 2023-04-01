@@ -7,7 +7,7 @@ import 'package:the_movie/components/ImageComponent.dart';
 class CardComponent extends StatelessWidget {
 
   String urlImg;
- String titulo;
+  String titulo;
 
   CardComponent({
     Key? key,
@@ -29,7 +29,7 @@ class CardComponent extends StatelessWidget {
                padding: EdgeInsets.only(top: 10),
                child: Column(
                    children: [
-                     ImageComponent(urlImg: urlImg),
+                     ImageComponent(urlImg: urlImg ),
                      Padding(
                          padding: const EdgeInsets.symmetric(vertical: 9),
                          child: SizedBox(
