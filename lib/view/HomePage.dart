@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:the_movie/components/CarrousselImagesComponent.dart';
-
 import 'package:the_movie/data/repository/MovieRepository.dart';
-import 'package:the_movie/components/ListMovieComponent.dart';
 import 'package:the_movie/data/service/ApiTheMovieService.dart';
-
+import '../components/widgets/CarrousselImagesComponent.dart';
+import '../components/widgets/ListMovieComponent.dart';
 import '../controller/HomePageController.dart';
 import '../model/ListsModel.dart';
 import 'ListMoviePage.dart';
@@ -43,7 +41,6 @@ class HomePage extends StatelessWidget {
                           itemBuilder: (BuildContext context, int index) {
                             ListModel item =
                                 movieController.moviesListsMovies[index];
-
                             return Column(
                               children: [
                                 Row(

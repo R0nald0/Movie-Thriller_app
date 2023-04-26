@@ -4,9 +4,6 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:the_movie/model/MovieLatesy.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-import '../model/ItemMovieTrailler.dart';
-import '../data/repository/MovieRepository.dart';
-
 class VideoPlayer extends StatefulWidget {
   String? movieTrailler;
 
@@ -17,7 +14,6 @@ class VideoPlayer extends StatefulWidget {
 
 class _VideoPlayerState extends State<VideoPlayer> {
   late YoutubePlayerController playerController;
-  String url = "https://www.youtube.com/watch?v=QxJQbWOIK4s";
 
   @override
   void initState() {

@@ -7,12 +7,6 @@ import '../../config/Key_config.dart';
 import 'IApi.dart';
 
 class DioApi implements IApi {
-/*  @override
-  Future<Response<dynamic>> getApi(String uriFilmes) async {
-    var result = await Dio()
-        .get("${Config.ENDPOINT}$uriFilmes?api_key=${Config.API_KEY}");
-    return result;
-  }*/
   final Dio client;
   DioApi(this.client);
 
