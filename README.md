@@ -19,5 +19,5 @@ Aplicativo desenvolvido em flutter,que exibe lista de filmes com trailers e revi
  ---
  * Consumo de Api com Dio
  * Components widgets
- * GetX para injeção de depêncdencia,gerenciamento de estado e gerenciamento de rotas
+ * GetX para injeção de depêndencia,gerenciamento de estado e gerenciamento de rotas
  * Consumo da API The movieDb
